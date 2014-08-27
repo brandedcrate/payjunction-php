@@ -15,7 +15,7 @@ class TransactionClient extends PayjunctionClient
      */
     public function create($params)
     {
-        return $this->post('/transactions');
+        return $this->post('/transactions',$params);
     }
 
     /**
@@ -37,7 +37,7 @@ class TransactionClient extends PayjunctionClient
      */
     public function update($id, $params = null)
     {
-        return $this->put('/transactions/'.$id,$params);
+        return $this->put('/transactions/'.$id, $params);
 
     }
 

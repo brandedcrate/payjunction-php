@@ -16,6 +16,13 @@ class PayjunctionClient
 
     }
 
+    public function setEndpoint($endpoint)
+    {
+        $this->baseUrl = $endpoint;
+    }
+
+
+
     /**
      * @description initializes the curl handle with default configuration and settings
      * @param null $handle
@@ -26,6 +33,7 @@ class PayjunctionClient
         $this->curl = curl_init();
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false); //Don't worry about validating ssl @todo talk about security concerns
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
+
 
         //if we have a password and username then set it by default to be passed for authentication
         if (isset($this->defaults['password']) && isset($this->defaults['username'])) {
@@ -72,8 +80,10 @@ class PayjunctionClient
      * @param null $contentType
      * @return array|mixed
      */
-    public function processResponse($response, $contentType = null)
+    public function processResponse($response)
     {
+        $contentType = curl_getinfo($this->curl, CURLINFO_CONTENT_TYPE);
+
 
         if ($contentType == 'text/html' || is_null($contentType) || !isset($contentType) || $contentType = '' || $contentType == FALSE) {
             return $response;
@@ -105,6 +115,7 @@ class PayjunctionClient
         curl_setopt($this->curl, CURLOPT_POST, TRUE);
         curl_setopt($this->curl, CURLOPT_URL, $this->baseUrl . $path);
 
+
         if (is_object($params) || is_array($params)) {
             curl_setopt($this->curl, CURLOPT_POSTFIELDS, http_build_query($params));
         }
@@ -131,9 +142,8 @@ class PayjunctionClient
         curl_setopt($this->curl, CURLOPT_HTTPGET, TRUE);
         curl_setopt($this->curl, CURLOPT_URL, $this->baseUrl . $path . $query_string);
 
-        $contentType = curl_getinfo($this->curl, CURLINFO_CONTENT_TYPE);
 
-        return $this->processResponse(curl_exec($this->curl), $contentType);
+        return $this->processResponse(curl_exec($this->curl));
     }
 
 

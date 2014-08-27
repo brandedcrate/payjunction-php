@@ -22,7 +22,7 @@ $data = array(
 
 );
 
-$response = json_decode($customerClient->create($data)); //@todo, this particular response does not provide a content type within the header. May need to contact payjunction to see whats up
+$response = $customerClient->create($data); //@todo, this particular response does not provide a content type within the header. May need to contact payjunction to see whats up
 var_dump($response);
 
 $id = $response->customerId;
@@ -30,6 +30,7 @@ $id = $response->customerId;
 //Get that customers information
 
 $response = $customerClient->read($id);
+
 
 
 
