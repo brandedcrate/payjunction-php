@@ -67,20 +67,6 @@ class PayjunctionClient
     }
 
     /**
-     * @description turns the values of a given array in to a string suitable for curl operations
-     * @param $data
-     */
-    public function stringify($data)
-    {
-        $string = '';
-        foreach ($data as $key => $value) {
-            $string .= urlencode($key) . '=' . urlencode($value) . "&";
-        }
-        return rtrim($string, '&');
-
-    }
-
-    /**
      * @description takes the response from our curl request and turns it into an object if necessary
      * @param $response
      * @param null $contentType
@@ -139,7 +125,7 @@ class PayjunctionClient
         //create the query string if there are any parameters that need to be passed
         $query_string = "";
         if (!is_null($params)) {
-            $query_string = "?" . $this->stringify($params);
+            $query_string = "?" . http_build_query($params,'','&');
         }
 
         curl_setopt($this->curl, CURLOPT_HTTPGET, TRUE);
