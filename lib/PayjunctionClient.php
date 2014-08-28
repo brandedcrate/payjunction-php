@@ -2,7 +2,7 @@
 
 class PayjunctionClient
 {
-    public $rest;
+
     public $liveEndpoint = 'https://api.payjunction.com';
     public $testEndpoint = 'https://api.payjunctionlabs.com';
     public $packageVersion = '0.0.1';
@@ -12,7 +12,7 @@ class PayjunctionClient
     public function __construct()
     {
         $this->userAgent = 'PayJunctionPHPClient/' . $this->packageVersion . '(BrandedCreate; PHP/)'; //@todo add process.version
-        $this->baseUrl = $this->testEndpoint;
+        $this->baseUrl = $this->testEndpoint; //@todo create a method for setting the base url to either test or live
 
     }
 

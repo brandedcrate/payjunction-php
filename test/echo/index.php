@@ -15,4 +15,4 @@ if($data['request_method'] == 'PUT')
     $data['put'] = $put_data;
 }
 echo json_encode($data);
-?>
+
