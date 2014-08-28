@@ -1,6 +1,6 @@
 <?php
 
-class TransactionTest extends PHPUnit_Framework_TestCase
+class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
 {
 
     /**

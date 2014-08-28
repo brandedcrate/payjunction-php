@@ -1,6 +1,6 @@
 <?php
 
-class ReceiptTest extends PHPUnit_Framework_TestCase
+class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
 {
 
     private $createData;

@@ -1,6 +1,6 @@
 <?php
 
-class CustomerTest extends PHPUnit_Framework_TestCase
+class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
 {
 
     private $createData;

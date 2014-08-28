@@ -1,6 +1,6 @@
 <?php
 
-class TransactionTest extends PHPUnit_Framework_TestCase{
+class TransactionUnitTest extends PHPUnit_Framework_TestCase{
 
     static $endpoint = 'http://localhost/payjunctionphp/test/echo';
 
@@ -21,9 +21,9 @@ class TransactionTest extends PHPUnit_Framework_TestCase{
     private function getRequestPath($client = null)
     {
         if(!isset($client)) $client = $this->client;
-        return str_replace($client->baseUrl,'',curl_getinfo($client->curl)['url']);
+        $request_path = str_replace($client->baseUrl,'',curl_getinfo($client->curl));
+        return $request_path['url'];
     }
-
     /**
      * Ensure that the correct verb and path are used for the create method
      */
