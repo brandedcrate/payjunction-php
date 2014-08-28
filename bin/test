@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 php -S localhost:8000 > /dev/null 2>&1 &
 SERVER_PID=$!
 
