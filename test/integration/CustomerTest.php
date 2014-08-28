@@ -42,6 +42,7 @@ class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateCustomer()
     {
+        var_dump($this->customer);
         $this->assertTrue(is_integer($this->customer->customerId), "Got a " . gettype($this->customer->customerId) . " instead of an integer. A customer was not created");
     }
 
