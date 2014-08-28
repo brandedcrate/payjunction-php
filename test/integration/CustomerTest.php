@@ -1,15 +1,16 @@
 <?php
-
+require_once('test/bootstrap.php');
 class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
 {
 
     private $createData;
 
     /**
-     * Runs once before all tests are started     *
+     * Runs once before all tests are starte d     *
      */
     public function setUp()
     {
+        sleep (12);
         $options = array(
             'username' => 'pj-ql-01',
             'password' => 'pj-ql-01p',
@@ -33,7 +34,6 @@ class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
         );
 
         $this->customer = $this->client->create($this->createData);
-
     }
 
 
@@ -42,7 +42,7 @@ class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateCustomer()
     {
-        var_dump($this->customer);
+        sleep (6);
         $this->assertTrue(is_integer($this->customer->customerId), "Got a " . gettype($this->customer->customerId) . " instead of an integer. A customer was not created");
     }
 
@@ -51,6 +51,7 @@ class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testReadCustomer()
     {
+        sleep (6);
         $customer = $this->client->read($this->customer->customerId);
         $this->assertTrue(is_integer($customer->customerId), "Got a " . gettype($customer->customerId) . " instead of an integer. Customer was not read");
     }
@@ -60,6 +61,7 @@ class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testUpdateCustomer()
     {
+        sleep (6);
         $response = $this->client->update($this->customer->customerId,$this->createData);
         foreach($this->createData as $key => $value)
         {
@@ -72,6 +74,7 @@ class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testDeleteCustomer()
     {
+        sleep (6);
         $response = $this->client->delete($this->customer->customerId);
         //@todo assert that the response status code is 204
         $this->assertFalse($response, "Response contains content, Customer was not deleted");

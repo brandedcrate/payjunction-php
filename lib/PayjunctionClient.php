@@ -33,6 +33,7 @@ class PayjunctionClient
         $this->curl = curl_init();
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false); //Don't worry about validating ssl @todo talk about security concerns
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->curl, CURLOPT_FORBID_REUSE, true);
 
 
         //if we have a password and username then set it by default to be passed for authentication

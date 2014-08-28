@@ -1,5 +1,5 @@
 <?php
-
+require_once('test/bootstrap.php');
 class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
 {
 
@@ -8,6 +8,7 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
+        sleep (12);
         $options = array(
             'username' => 'pj-ql-01',
             'password' => 'pj-ql-01p',
@@ -23,7 +24,9 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
      */
     private function isSuccessfulTransaction($transaction,$type = null)
     {
+
         $this->assertObjectNotHasAttribute('errors',$transaction,$type . " Transaction was not successful, It contained errors.");
+        if(isset($transaction->errors)) var_dump($transaction->errors);
         $this->assertTrue($transaction->response->approved, $type . " Transaction was not approved");
         $this->assertEquals($transaction->status,"CAPTURE",$type . " Transaction was not a capture");
     }
@@ -34,7 +37,7 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
      */
     private function getRandomAmountBase()
     {
-        return number_format(rand(),2,'.','');
+        return number_format(rand(1,100),2,'.','');
     }
 
     /**
@@ -49,7 +52,13 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
             'achType' => 'PPD',
             'amountBase' => $this->getRandomAmountBase(),
         );
-        $this->isSuccessfulTransaction($this->client->create($data),'ACH');
+
+        $transaction = $this->client->create($data);
+
+        var_dump($transaction);
+
+        $this->isSuccessfulTransaction($transaction,'ACH');
+
     }
 
 
@@ -67,7 +76,9 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
             'amountBase' => $this->getRandomAmountBase()
         );
 
-        $this->isSuccessfulTransaction($this->client->create($data),'Card');//@todo this is returning back status = DECLINED , figure out what is causing the issue
+        $transaction = $this->client->create($data);
+        var_dump($transaction);
+        $this->isSuccessfulTransaction($transaction,'Card');//@todo this is returning back status = DECLINED , figure out what is causing the issue
     }
 
     /**
@@ -137,6 +148,7 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testReadTransaction()
     {
+        sleep (6);
         $data = array('achRoutingNumber' => '104000016',
             'achAccountNumber' => '123456789',
             'achAccountType' => 'CHECKING',

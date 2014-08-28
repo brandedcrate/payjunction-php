@@ -5,7 +5,7 @@ set -e
 php -S localhost:8000 > /dev/null 2>&1 &
 SERVER_PID=$!
 
-phpunit test/unit
-phpunit test/integration
+phpunit test/unit --debug --no-configuration --bootstrap test/bootstrap.php
+phpunit test/integration --debug --no-configuration --bootstrap test/bootstrap.php
 
 kill $SERVER_PID
