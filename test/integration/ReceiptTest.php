@@ -10,7 +10,6 @@ class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        sleep (12);
         $options = array(
             'username' => 'pj-ql-01',
             'password' => 'pj-ql-01p',
@@ -32,8 +31,6 @@ class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
 
 
         $this->transaction = $this->transactionClient->create($this->createData);
-        var_dump($this->transaction);
-
     }
 
     /**
@@ -50,7 +47,6 @@ class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testEmail()
     {
-        sleep (6);
         $data = array(
             'to' => 'stephen+automation@brandedcrate.com',
             'replyTo' => 'foobar@whatever.com',
@@ -65,7 +61,6 @@ class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
      * @description read a receipt
      */
     public function testReadReceipt(){
-        sleep (6);
         $response = $this->client->read($this->transaction->transactionId);
         //@todo assert that the response status code is 200
         $this->assertObjectHasAttribute('documents',$response);
@@ -75,7 +70,6 @@ class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
      * @description read a thermal receipt
      */
     public function testReadThermal(){
-        sleep (6);
         $response = $this->client->readThermal($this->transaction->transactionId);
         //@todo assert that the response content-type is text/html
         $this->assertGreaterThan(0,strlen($response),"thermal response is not greater than 0");
@@ -86,7 +80,6 @@ class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function readFullpage()
     {
-        sleep (6);
         $response = $this->client->readFullPage($this->transaction->transactionId);
         $this->assertGreaterThan(0,strlen($response),"full page receipt response is not greater than 0");
     }
