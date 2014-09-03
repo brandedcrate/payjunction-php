@@ -78,7 +78,7 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
 
         $transaction = $this->client->create($data);
         var_dump($transaction);
-        $this->isSuccessfulTransaction($transaction,'Card');//@todo this is returning back status = DECLINED , figure out what is causing the issue
+        $this->isSuccessfulTransaction($transaction,'Card');
     }
 
     /**
@@ -91,7 +91,7 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
             'cardTrack' => '%B4444333322221111^First/Last^1712980100000?;4444333322221111=1712980100000?',
             'amountBase' => $this->getRandomAmountBase()
         );
-        $this->isSuccessfulTransaction($this->client->create($data),'Keyed'); //@todo this is returning back status = DECLINED , figure out what is causing the issue
+        $this->isSuccessfulTransaction($this->client->create($data),'Keyed');
     }
 
     /**

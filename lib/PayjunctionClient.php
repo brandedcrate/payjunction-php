@@ -11,13 +11,14 @@ class PayjunctionClient
 
     public function __construct()
     {
-        $this->userAgent = 'PayJunctionPHPClient/' . $this->packageVersion . '(BrandedCreate; PHP/)'; //@todo add process.version
-        $this->baseUrl = $this->testEndpoint; //@todo create a method for setting the base url to either test or live
-
+        $this->userAgent = 'PayJunctionPHPClient/' . $this->packageVersion . '(BrandedCreate; PHP/ 1.0)';
+        $this->baseUrl = $this->testEndpoint;
     }
 
     public function setEndpoint($endpoint)
     {
+        if($endpoint = 'test') $endpoint = $this->testEndpoint;
+        if($endpoint = 'live') $endpoint = $this->liveEndpoint;
         $this->baseUrl = $endpoint;
     }
 
@@ -31,7 +32,9 @@ class PayjunctionClient
     public function initCurl($handle = null)
     {
         $this->curl = curl_init();
-        curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false); //Don't worry about validating ssl @todo talk about security concerns
+        curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, 1);
+        curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 2);
+
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_FORBID_REUSE, true);
 

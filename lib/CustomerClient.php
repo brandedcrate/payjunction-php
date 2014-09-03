@@ -15,7 +15,7 @@ class CustomerClient extends PayjunctionClient
      */
     public function create($params)
     {
-        return $this->post('/customers', $params);//@todo need to figure out why this response is not returning a content type in the header
+        return $this->post('/customers', $params);
     }
 
     /**

@@ -42,7 +42,6 @@ class TransactionClient extends PayjunctionClient
     }
 
     /**
-     * @todo this does not appear to be working 405 Method Not Allowed
      * @description add a signature to an existing transaction
      * @param $id
      * @param $params
