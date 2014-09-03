@@ -52,7 +52,7 @@ class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
     {
         sleep (6);
         $data = array(
-            'to' => 'stephen+automation@brandedcreate.com',
+            'to' => 'stephen+automation@brandedcrate.com',
             'replyTo' => 'foobar@whatever.com',
             'requestSignature' => 'true'
         );

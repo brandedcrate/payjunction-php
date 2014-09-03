@@ -16,7 +16,7 @@ class PayjunctionClient
         {
             $this->options = $options;
         }
-        $this->userAgent = 'PayJunctionPHPClient/' . $this->packageVersion . '(BrandedCreate; PHP/ 1.0)';
+        $this->userAgent = 'PayJunctionPHPClient/' . $this->packageVersion . '(BrandedCrate; PHP/ 1.0)';
         $this->baseUrl = $this->testEndpoint;
     }
 
