@@ -8,7 +8,6 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        sleep (12);
         $options = array(
             'username' => 'pj-ql-01',
             'password' => 'pj-ql-01p',
@@ -26,7 +25,6 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
     {
 
         $this->assertObjectNotHasAttribute('errors',$transaction,$type . " Transaction was not successful, It contained errors.");
-        if(isset($transaction->errors)) var_dump($transaction->errors);
         $this->assertTrue($transaction->response->approved, $type . " Transaction was not approved");
         $this->assertEquals($transaction->status,"CAPTURE",$type . " Transaction was not a capture");
     }
@@ -45,7 +43,6 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testACHTransaction()
     {
-        sleep (6);
         $data = array('achRoutingNumber' => '104000016',
             'achAccountNumber' => '123456789',
             'achAccountType' => 'CHECKING',
@@ -54,8 +51,6 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
         );
 
         $transaction = $this->client->create($data);
-
-        var_dump($transaction);
 
         $this->isSuccessfulTransaction($transaction,'ACH');
 
@@ -67,7 +62,6 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testCardTransactionCreate()
     {
-        sleep (6);
         $data = array(
             'cardNumber' => '4444333322221111',
             'cardExpMonth' => '01',
@@ -77,7 +71,6 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
         );
 
         $transaction = $this->client->create($data);
-        var_dump($transaction);
         $this->isSuccessfulTransaction($transaction,'Card');
     }
 
@@ -86,7 +79,6 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testKeyedCardTransactionCreate()
     {
-        sleep (6);
         $data = array(
             'cardTrack' => '%B4444333322221111^First/Last^1712980100000?;4444333322221111=1712980100000?',
             'amountBase' => $this->getRandomAmountBase()
@@ -99,7 +91,6 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testVoidTransaction()
     {
-        sleep (6);
         $data = array('achRoutingNumber' => '104000016',
             'achAccountNumber' => '123456789',
             'achAccountType' => 'CHECKING',
@@ -125,7 +116,6 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testAddSignature()
     {
-        sleep(6);
         $data = array('achRoutingNumber' => '104000016',
             'achAccountNumber' => '123456789',
             'achAccountType' => 'CHECKING',
@@ -148,7 +138,6 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testReadTransaction()
     {
-        sleep (6);
         $data = array('achRoutingNumber' => '104000016',
             'achAccountNumber' => '123456789',
             'achAccountType' => 'CHECKING',
