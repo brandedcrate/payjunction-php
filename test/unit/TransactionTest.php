@@ -38,7 +38,7 @@ class TransactionUnitTest extends PHPUnit_Framework_TestCase{
         );
 
 
-        $transaction = $this->client->create($data);
+        $transaction = $this->client->disableSSL()->create($data);
         $this->assertEquals($data, get_object_vars($transaction->post),'Passed variables are not correct');
         $this->assertEquals('POST', $transaction->request_method,'The PHP Verb Is Incorrect');
         $this->assertEquals('/transactions', $this->getRequestPath(), 'The path is incorrect');
@@ -51,7 +51,7 @@ class TransactionUnitTest extends PHPUnit_Framework_TestCase{
      */
     public function testRead()
     {
-        $transaction = $this->client->read(543);
+        $transaction = $this->client->disableSSL()->read(543);
 
         $this->assertEquals('GET', $transaction->request_method,'The PHP Verb Is Incorrect');
         $this->assertEquals('/transactions/543', $this->getRequestPath(), 'The path is incorrect');
@@ -67,7 +67,7 @@ class TransactionUnitTest extends PHPUnit_Framework_TestCase{
             'foo' => 'baz'
         );
 
-        $transaction = $this->client->Update(654,$data);
+        $transaction = $this->client->disableSSL()->Update(654,$data);
 
         $this->assertEquals($data, get_object_vars($transaction->put),'Passed variables are not correct');
         $this->assertEquals('PUT', $transaction->request_method,'The PHP Verb Is Incorrect');
@@ -84,7 +84,7 @@ class TransactionUnitTest extends PHPUnit_Framework_TestCase{
             'foo' => 'baa'
         );
 
-        $transaction = $this->client->addSignature(655,$data);
+        $transaction = $this->client->disableSSL()->addSignature(655,$data);
         $this->assertEquals($data, get_object_vars($transaction->post),'Passed variables are not correct');
         $this->assertEquals('POST', $transaction->request_method,'The PHP Verb Is Incorrect');
         $this->assertEquals('/transactions/655/signature/capture', $this->getRequestPath(), 'The path is incorrect');

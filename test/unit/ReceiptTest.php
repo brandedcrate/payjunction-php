@@ -33,7 +33,7 @@ class ReceiptUnitTest extends PHPUnit_Framework_TestCase{
     public function testRead()
     {
 
-        $transaction = $this->client->read(1234);
+        $transaction = $this->client->disableSSL()->read(1234);
         $this->assertEquals('GET', $transaction->request_method,'The PHP Verb Is Incorrect');
         $this->assertEquals('/transactions/1234/receipts/latest', $this->getRequestPath(), 'The path is incorrect');
 
@@ -45,8 +45,7 @@ class ReceiptUnitTest extends PHPUnit_Framework_TestCase{
     public function testReadThermal()
     {
 
-        $transaction = $this->client->readThermal(1234);
-
+        $transaction = $this->client->disableSSL()->readThermal(1234);
         $this->assertEquals('GET', $transaction->request_method,'The PHP Verb Is Incorrect');
         $this->assertEquals('/transactions/1234/receipts/latest/thermal', $this->getRequestPath(), 'The path is incorrect');
 
@@ -57,7 +56,7 @@ class ReceiptUnitTest extends PHPUnit_Framework_TestCase{
      * Ensure that the correct verb and path are used for the readFullPage method
      */
     public function testReadFullPage()    {
-        $transaction = $this->client->readFullPage(1234);
+        $transaction = $this->client->disableSSL()->readFullPage(1234);
         $this->assertEquals('GET', $transaction->request_method,'The PHP Verb Is Incorrect');
         $this->assertEquals('/transactions/1234/receipts/latest/fullpage', $this->getRequestPath(), 'The path is incorrect');
     }
@@ -69,9 +68,9 @@ class ReceiptUnitTest extends PHPUnit_Framework_TestCase{
     public function testEmail()
     {
         $data = array(
-          'hi' => 'hello'
+            'hi' => 'hello'
         );
-        $transaction = $this->client->email(1234,$data);
+        $transaction = $this->client->disableSSL()->email(1234,$data);
         $this->assertEquals('POST', $transaction->request_method,'The PHP Verb Is Incorrect');
         $this->assertEquals($data, get_object_vars($transaction->post),'Passed variables are not correct');
         $this->assertEquals('/transactions/1234/receipts/latest/email', $this->getRequestPath(), 'The path is incorrect');

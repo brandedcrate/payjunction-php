@@ -7,6 +7,7 @@ class PayjunctionClient
     public $testEndpoint = 'https://api.payjunctionlabs.com';
     public $packageVersion = '0.0.1';
     public $userAgent;
+    public $disableSSL = FALSE;
 
 
     public function __construct()
@@ -17,11 +18,20 @@ class PayjunctionClient
 
     public function setEndpoint($endpoint)
     {
-        if($endpoint = 'test') $endpoint = $this->testEndpoint;
-        if($endpoint = 'live') $endpoint = $this->liveEndpoint;
+        if ($endpoint == 'test') {
+            $endpoint = $this->testEndpoint;
+        } elseif ($endpoint == 'live') {
+            $endpoint = $this->liveEndpoint;
+        }
         $this->baseUrl = $endpoint;
     }
 
+
+    public function disableSSL()
+    {
+        $this->disableSSL = TRUE;
+        return $this;
+    }
 
 
     /**
@@ -32,8 +42,16 @@ class PayjunctionClient
     public function initCurl($handle = null)
     {
         $this->curl = curl_init();
-        curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, 1);
-        curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 2);
+        if($this->disableSSL == FALSE || !isset($this->disableSSL))
+        {
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, 1);
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 2);
+        }else{
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, false);
+        }
+
+
 
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_FORBID_REUSE, true);
@@ -118,7 +136,6 @@ class PayjunctionClient
     {
         curl_setopt($this->curl, CURLOPT_POST, TRUE);
         curl_setopt($this->curl, CURLOPT_URL, $this->baseUrl . $path);
-
 
         if (is_object($params) || is_array($params)) {
             curl_setopt($this->curl, CURLOPT_POSTFIELDS, http_build_query($params));
