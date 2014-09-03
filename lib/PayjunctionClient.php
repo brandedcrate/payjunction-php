@@ -10,8 +10,12 @@ class PayjunctionClient
     public $disableSSL = FALSE;
 
 
-    public function __construct()
+    public function __construct($options = null)
     {
+        if(isset($options))
+        {
+            $this->options = $options;
+        }
         $this->userAgent = 'PayJunctionPHPClient/' . $this->packageVersion . '(BrandedCreate; PHP/ 1.0)';
         $this->baseUrl = $this->testEndpoint;
     }
@@ -84,6 +88,7 @@ class PayjunctionClient
      */
     public function generateClient($options = null)
     {
+
         $this->baseUrl = isset($options['endpoint']) ? $options['endpoint'] : $this->baseUrl;
         $this->defaults['username'] = isset($options['username']) ? $options['username'] : '';
         $this->defaults['password'] = isset($options['password']) ? $options['password'] : '';
@@ -202,6 +207,48 @@ class PayjunctionClient
 
 
         return $this->processResponse(curl_exec($this->curl));
+    }
+
+
+    /**
+     * @description returns an instance of the receipt client
+     * @return ReceiptClient
+     */
+    public function receipt()
+    {
+        if(!isset($this->receiptClient) && isset($this->options))
+        {
+            $this->receiptClient = new ReceiptClient($this->options);
+        }
+        return $this->receiptClient;
+    }
+
+
+    /**
+     * @description returns an instance of the transaction client
+     * @return TransactionClient
+     */
+    public function transaction()
+    {
+        if(!isset($this->transactionClient) && isset($this->options))
+        {
+            $this->transactionClient = new TransactionClient($this->options);
+        }
+        return $this->transactionClient;
+
+    }
+
+    /**
+     * @description returns an instance of the customer client
+     * @return CustomerClient
+     */
+    public function customer()
+    {
+        if(!isset($this->customerClient) && isset($this->options))
+        {
+            $this->customerClient = new CustomerClient($this->options);
+        }
+        return $this->customerClient;
     }
 
 

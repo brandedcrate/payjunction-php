@@ -41,6 +41,13 @@ $options = array(
 $customerClient = new CustomerClient($options); //create an instance of the Customer Client
 $transactionClient = new TransactionClient($options); //create an instance of the Transaction Client
 $receiptClient = new ReceiptClient($options); //create an instance of the ReceiptClient
+
+//This is another way to get specific clients that may be more convenient
+
+$payjunction = new PayjunctionClient($options);
+$customerClient = $payjunction->customer();//get a single instance of the Customer Client in relation to the Payjunction Client
+$transactionClient = $payjunction->transaction();//get a single instance of the Transaction Client in relation to the Payjunction Client
+$receiptClient = $payjunction->receipt();//get a single instance of the Receipt Client in relation to the Payjunction Client
 ```
 
 Examples
@@ -180,4 +187,4 @@ Execution of the test runner and creation of the server endpoint are done automa
 ./bin/test
 ```
 
-Alternatively you may also use the phpunit.xml configuration file to run the test suites.
+Alternatively you may also use the phpunit.xml configuration file to run the test suites from within your IDE or some other means. Remember you must have the correct endpoint configured so that the unit tests can reach the test/echo directory via curl.
