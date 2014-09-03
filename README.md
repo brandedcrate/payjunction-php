@@ -24,7 +24,8 @@ $ composer update
 The API client has child classes for each of the resources it supports (transactions, receipts and customers) and each class has a method for each of the supported actions.
 Each of the methods return a php standard object for easier readability and handling.
 
-The libraries only dependency is PHPUnit which is included within the composer.json file.
+The library has no dependencies.
+
 
 Usage
 ------------
@@ -171,7 +172,10 @@ $customerClient->delete($customer_id);
 ```
 
 ## Running Tests
-Included with the package is a bash script to execute the included PHPUnit tests. You must have a running instance of a php server endpoint with access to the test/echo directory for the unit tests to pass.
+Included with the package is a bash script to execute the included PHPUnit tests.
+You must have a running instance of a php server endpoint with access to the test/echo directory for the unit tests to pass.
+Execution of the test runner and creation of the server endpoint are done automatically through the execution of the following command.
+
 ```bash
 ./bin/test
 ```
