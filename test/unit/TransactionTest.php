@@ -1,5 +1,7 @@
 <?php
 require_once('test/bootstrap.php');
+use BrandedCrate\PayJunction\TransactionClient;
+
 class TransactionUnitTest extends PHPUnit_Framework_TestCase{
 
     static $endpoint = 'http://localhost:8000/test/echo';

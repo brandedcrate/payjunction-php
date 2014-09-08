@@ -1,5 +1,8 @@
 <?php
 require_once('test/bootstrap.php');
+use BrandedCrate\PayJunction\ReceiptClient;
+use BrandedCrate\PayJunction\TransactionClient;
+
 class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
 {
 

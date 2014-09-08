@@ -1,4 +1,4 @@
-<?php
+<?php namespace BrandedCrate\PayJunction;
 class CustomerClient extends PayjunctionClient
 {
     public function __construct($options)

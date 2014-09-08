@@ -1,5 +1,7 @@
 <?php
 require_once('test/bootstrap.php');
+use BrandedCrate\PayJunction\TransactionClient;
+
 class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
 {
 

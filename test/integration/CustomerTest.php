@@ -1,5 +1,8 @@
 <?php
 require_once('test/bootstrap.php');
+use BrandedCrate\PayJunction\CustomerClient;
+
+
 class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
 {
 
