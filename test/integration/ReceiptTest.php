@@ -1,7 +1,6 @@
 <?php
-require_once('test/bootstrap.php');
-use BrandedCrate\PayJunction\ReceiptClient;
-use BrandedCrate\PayJunction\TransactionClient;
+
+use BrandedCrate\PayJunction;
 
 class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
 {
@@ -16,12 +15,13 @@ class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
         $options = array(
             'username' => 'pj-ql-01',
             'password' => 'pj-ql-01p',
-            'appkey' => '2489d40d-a74f-474f-9e8e-7b39507f3101'
+            'appkey'   => '2489d40d-a74f-474f-9e8e-7b39507f3101',
+            'endpoint' => 'test'
         );
 
         parent::setUp();
-        $this->client = new ReceiptClient($options);
-        $this->transactionClient = new TransactionClient($options);
+
+        $this->client = new PayJunction\Client($options);
 
         $this->createData = array(
             'achRoutingNumber' => '104000016',
@@ -31,9 +31,7 @@ class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
             'amountBase' => $this->getRandomAmountBase(),
         );
 
-
-
-        $this->transaction = $this->transactionClient->create($this->createData);
+        $this->transaction = $this->client->transaction()->create($this->createData);
     }
 
     /**
@@ -55,16 +53,15 @@ class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
             'replyTo' => 'foobar@whatever.com',
             'requestSignature' => 'true'
         );
-        $response = $this->client->email($this->transaction->transactionId,$data);
-        //@todo assert that the response status code is 204
-        $this->assertNull($response,'Response was not null, email failed');
+        $response = $this->client->receipt()->email($this->transaction->transactionId,$data);
+        $this->assertTrue($response,'Response was not successful, email failed');
     }
 
     /**
      * @description read a receipt
      */
     public function testReadReceipt(){
-        $response = $this->client->read($this->transaction->transactionId);
+        $response = $this->client->receipt()->read($this->transaction->transactionId);
         //@todo assert that the response status code is 200
         $this->assertObjectHasAttribute('documents',$response);
     }
@@ -73,7 +70,7 @@ class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
      * @description read a thermal receipt
      */
     public function testReadThermal(){
-        $response = $this->client->readThermal($this->transaction->transactionId);
+        $response = $this->client->receipt()->readThermal($this->transaction->transactionId);
         //@todo assert that the response content-type is text/html
         $this->assertGreaterThan(0,strlen($response),"thermal response is not greater than 0");
     }
@@ -83,10 +80,7 @@ class ReceiptIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function readFullpage()
     {
-        $response = $this->client->readFullPage($this->transaction->transactionId);
+        $response = $this->client->receipt()->readFullPage($this->transaction->transactionId);
         $this->assertGreaterThan(0,strlen($response),"full page receipt response is not greater than 0");
     }
-
-
-
 }

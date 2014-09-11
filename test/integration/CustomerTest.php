@@ -1,7 +1,6 @@
 <?php
-require_once('test/bootstrap.php');
-use BrandedCrate\PayJunction\CustomerClient;
 
+use BrandedCrate\PayJunction;
 
 class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
 {
@@ -16,11 +15,13 @@ class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
         $options = array(
             'username' => 'pj-ql-01',
             'password' => 'pj-ql-01p',
-            'appkey' => '2489d40d-a74f-474f-9e8e-7b39507f3101'
+            'appkey'   => '2489d40d-a74f-474f-9e8e-7b39507f3101',
+            'endpoint' => 'test'
         );
 
         parent::setUp();
-        $this->client = new CustomerClient($options);
+
+        $this->client = (new PayJunction\Client($options))->customer();
 
         $this->createData = array(
             'companyName' => 'ACME, inc.',
@@ -74,11 +75,13 @@ class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
     public function testDeleteCustomer()
     {
         $response = $this->client->delete($this->customer->customerId);
-        //@todo assert that the response status code is 204
-        $this->assertFalse($response, "Response contains content, Customer was not deleted");
-        $this->assertNull($this->client->read($this->customer->customerId),"The customer was able to be read, It was not deleted");
+        $this->assertTrue($response, "Unable to delete customer");
+
+        $response = $this->client->read($this->customer->customerId);
+        $this->assertEquals(
+            $response->errors[0]->message,
+            '404 Not Found',
+            'The customer was able to be read, It was not deleted'
+        );
     }
-
-
-
 }

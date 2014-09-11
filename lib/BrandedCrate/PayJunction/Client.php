@@ -1,42 +1,40 @@
 <?php namespace BrandedCrate\PayJunction;
 
-class PayjunctionClient
+use BrandedCrate\PayJunction\TransactionClient;
+use BrandedCrate\PayJunction\CustomerClient;
+use BrandedCrate\PayJunction\ReceiptClient;
+
+class Client
 {
 
     public $liveEndpoint = 'https://api.payjunction.com';
     public $testEndpoint = 'https://api.payjunctionlabs.com';
     public $packageVersion = '0.0.1';
     public $userAgent;
-    public $disableSSL = FALSE;
 
-
-    public function __construct($options = null)
+    public function __construct($options)
     {
-        if(isset($options))
-        {
-            $this->options = $options;
-        }
-        $this->userAgent = 'PayJunctionPHPClient/' . $this->packageVersion . '(BrandedCrate; PHP/ 1.0)';
-        $this->baseUrl = $this->testEndpoint;
+        $this->options = $options;
+
+        $this->userAgent = 'PayJunctionPHPClient/' .
+            $this->packageVersion .
+            '(BrandedCrate; ' .
+            phpversion() .
+            ')';
+
+        $this->setEndpoint($options['endpoint']);
     }
 
     public function setEndpoint($endpoint)
     {
         if ($endpoint == 'test') {
-            $endpoint = $this->testEndpoint;
+            $this->endpoint = $this->testEndpoint;
         } elseif ($endpoint == 'live') {
-            $endpoint = $this->liveEndpoint;
+            $this->endpoint = $this->liveEndpoint;
+        } elseif (is_string($endpoint)) {
+            $this->endpoint = $endpoint;
         }
-        $this->baseUrl = $endpoint;
     }
-
-
-    public function disableSSL()
-    {
-        $this->disableSSL = TRUE;
-        return $this;
-    }
-
 
     /**
      * @description initializes the curl handle with default configuration and settings
@@ -46,60 +44,21 @@ class PayjunctionClient
     public function initCurl($handle = null)
     {
         $this->curl = curl_init();
-        if($this->disableSSL == FALSE || !isset($this->disableSSL))
-        {
-            curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, 1);
-            curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 2);
-        }else{
-            curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, false);
-        }
 
-
-
+        curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, 1);
+        curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_FORBID_REUSE, true);
-
-
-        //if we have a password and username then set it by default to be passed for authentication
-        if (isset($this->defaults['password']) && isset($this->defaults['username'])) {
-            curl_setopt($this->curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-            curl_setopt($this->curl, CURLOPT_USERPWD, $this->defaults['username'] . ":" . $this->defaults['password']);
-        }
-
-        //if we have default headers to pass then pass them
-        if (isset($this->defaults['headers']) && is_array($this->defaults['headers'])) {
-            $headers = array();
-            foreach ($this->defaults['headers'] as $key => $value) {
-
-                array_push($headers, $key . ': ' . $value);
-
-            }
-            curl_setopt($this->curl, CURLOPT_HTTPHEADER, $headers);
-        }
-        return $this;
-    }
-
-
-    /**
-     * @description generates a new client
-     * @param null $options
-     * @return $this
-     */
-    public function generateClient($options = null)
-    {
-
-        $this->baseUrl = isset($options['endpoint']) ? $options['endpoint'] : $this->baseUrl;
-        $this->defaults['username'] = isset($options['username']) ? $options['username'] : '';
-        $this->defaults['password'] = isset($options['password']) ? $options['password'] : '';
-        $this->defaults['headers']['X-PJ-Application-Key'] = isset($options['appkey']) ? $options['appkey'] : '';
-        $this->defaults['headers']['User-Agent'] = $this->userAgent;
-
-        $this->initCurl();
-
+        curl_setopt($this->curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($this->curl, CURLOPT_USERPWD, $this->options['username'] . ":" . $this->options['password']);
+        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array(
+          "X-PJ-Application-Key: {$this->options['appkey']}",
+          "User-Agent: $this->userAgent",
+        ));
 
         return $this;
     }
+
 
     /**
      * @description takes the response from our curl request and turns it into an object if necessary
@@ -109,25 +68,23 @@ class PayjunctionClient
      */
     public function processResponse($response)
     {
-        $contentType = curl_getinfo($this->curl, CURLINFO_CONTENT_TYPE);
+        $contentType   = curl_getinfo($this->curl, CURLINFO_CONTENT_TYPE);
+        $responseCode  = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
+        $contentLength = curl_getinfo($this->curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
 
-
-        if ($contentType == 'text/html' || is_null($contentType) || !isset($contentType) || $contentType = '' || $contentType == FALSE) {
-            return $response;
+        if ($contentType == 'application/json') {
+            $response = json_decode($response);
         }
 
-        try {
-            $object = json_decode($response);
-            return $object;
-
-        } catch (Exception $e) {
-            return array(
-                'errors' => array(
-                    0 => 'Invalid Response Type, Error In Processing Response From Payjunction'
-                )
-            );
+        if ($responseCode < 200 && $responseCode >= 300) {
+            throw new Exception($response, $responseCode);
         }
 
+        if ($contentLength == 0) {
+            return true;
+        }
+
+        return $response;
     }
 
 
@@ -139,15 +96,16 @@ class PayjunctionClient
      */
     public function post($path, $params = null)
     {
+        $this->initCurl();
+
         curl_setopt($this->curl, CURLOPT_POST, TRUE);
-        curl_setopt($this->curl, CURLOPT_URL, $this->baseUrl . $path);
+        curl_setopt($this->curl, CURLOPT_URL, $this->endpoint . $path);
 
         if (is_object($params) || is_array($params)) {
             curl_setopt($this->curl, CURLOPT_POSTFIELDS, http_build_query($params));
         }
 
         return $this->processResponse(curl_exec($this->curl));
-
     }
 
     /**
@@ -158,6 +116,7 @@ class PayjunctionClient
      */
     public function get($path, $params = null)
     {
+        $this->initCurl();
 
         //create the query string if there are any parameters that need to be passed
         $query_string = "";
@@ -166,10 +125,18 @@ class PayjunctionClient
         }
 
         curl_setopt($this->curl, CURLOPT_HTTPGET, TRUE);
-        curl_setopt($this->curl, CURLOPT_URL, $this->baseUrl . $path . $query_string);
+        curl_setopt($this->curl, CURLOPT_URL, $this->endpoint . $path . $query_string);
 
 
-        return $this->processResponse(curl_exec($this->curl));
+        $response = $this->processResponse(curl_exec($this->curl));
+        $responseCode = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
+
+        // for some reason payjunction returns 204 instead of 404
+        if ($responseCode === 204) {
+            return false;
+        }
+
+        return $response;
     }
 
 
@@ -181,11 +148,13 @@ class PayjunctionClient
      */
     public function put($path, $params = null)
     {
+        $this->initCurl();
+
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PUT");
         if (is_object($params) || is_array($params)) {
             curl_setopt($this->curl, CURLOPT_POSTFIELDS, http_build_query($params));
         }
-        curl_setopt($this->curl, CURLOPT_URL, $this->baseUrl . $path);
+        curl_setopt($this->curl, CURLOPT_URL, $this->endpoint . $path);
 
         return $this->processResponse(curl_exec($this->curl));
     }
@@ -198,13 +167,14 @@ class PayjunctionClient
      */
     public function del($path, $params = null)
     {
+        $this->initCurl();
+
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "DELETE");
 
         if (is_object($params) || is_array($params)) {
             curl_setopt($this->curl, CURLOPT_POSTFIELDS, http_build_query($params));
         }
-        curl_setopt($this->curl, CURLOPT_URL, $this->baseUrl . $path);
-
+        curl_setopt($this->curl, CURLOPT_URL, $this->endpoint . $path);
 
         return $this->processResponse(curl_exec($this->curl));
     }

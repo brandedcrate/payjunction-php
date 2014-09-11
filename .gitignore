@@ -2,3 +2,4 @@
 *.zip
 vendor/
 composer.lock
+composer.phar

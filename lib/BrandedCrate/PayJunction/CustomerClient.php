@@ -1,13 +1,6 @@
 <?php namespace BrandedCrate\PayJunction;
-class CustomerClient extends PayjunctionClient
+class CustomerClient extends Client
 {
-    public function __construct($options)
-    {
-        parent::__construct();
-        $this->generateClient($options);
-
-    }
-
     /**
      * @description create a new customer
      * @param $params
@@ -47,9 +40,6 @@ class CustomerClient extends PayjunctionClient
      */
     public function delete($id)
     {
-        return $this->del('/customers/'+$id);
+        return $this->del("/customers/$id");
     }
-
-
-
 }

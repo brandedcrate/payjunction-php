@@ -17,14 +17,16 @@ if (!function_exists('getallheaders'))
 }
 
 header('Content-Type: application/json');
+
 $data = array(
     'headers' => getallheaders(),
-//    'server' => $_SERVER,
+    'path' => $_SERVER['REQUEST_URI'],
     'request_method' => $_SERVER['REQUEST_METHOD'],
     'get' => $_GET,
     'post' => $_POST,
     'put' => $_POST,
 );
+
 //If the request is a put then get the file contents and try to parse the string into an array
 if($data['request_method'] == 'PUT')
 {

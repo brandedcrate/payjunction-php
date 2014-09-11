@@ -20,8 +20,8 @@
         "phpunit/phpunit": "3.7.14"
     },
     "autoload": {
-        "classmap": [
-            "lib"
-        ]
+        "psr-0": {
+            "": "lib"
+        }
     }
 }

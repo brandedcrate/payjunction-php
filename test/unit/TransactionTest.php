@@ -1,31 +1,22 @@
 <?php
-require_once('test/bootstrap.php');
-use BrandedCrate\PayJunction\TransactionClient;
+
+use BrandedCrate\PayJunction;
 
 class TransactionUnitTest extends PHPUnit_Framework_TestCase{
-
-    static $endpoint = 'http://localhost:8000/test/echo';
 
     public function setUp()
     {
         $options = array(
             'username' => 'pj-ql-01',
             'password' => 'pj-ql-01p',
-            'appkey' => '2489d40d-a74f-474f-9e8e-7b39507f3101'
+            'appkey' => '2489d40d-a74f-474f-9e8e-7b39507f3101',
+            'endpoint' => 'http://localhost:8000'
         );
 
         parent::setUp();
-        $this->client = new TransactionClient($options);
-        $this->client->setEndpoint(self::$endpoint);
-
+        $this->client = new PayJunction\Client($options);
     }
 
-    private function getRequestPath($client = null)
-    {
-        if(!isset($client)) $client = $this->client;
-        $request_path = str_replace($client->baseUrl,'',curl_getinfo($client->curl));
-        return $request_path['url'];
-    }
     /**
      * Ensure that the correct verb and path are used for the create method
      */
@@ -39,12 +30,10 @@ class TransactionUnitTest extends PHPUnit_Framework_TestCase{
             'foo' => 'bar'
         );
 
-
-        $transaction = $this->client->disableSSL()->create($data);
+        $transaction = $this->client->transaction()->create($data);
         $this->assertEquals($data, get_object_vars($transaction->post),'Passed variables are not correct');
         $this->assertEquals('POST', $transaction->request_method,'The PHP Verb Is Incorrect');
-        $this->assertEquals('/transactions', $this->getRequestPath(), 'The path is incorrect');
-
+        $this->assertEquals('/transactions', $transaction->path, 'The path is incorrect');
     }
 
 
@@ -53,10 +42,10 @@ class TransactionUnitTest extends PHPUnit_Framework_TestCase{
      */
     public function testRead()
     {
-        $transaction = $this->client->disableSSL()->read(543);
+        $transaction = $this->client->transaction()->read(543);
 
         $this->assertEquals('GET', $transaction->request_method,'The PHP Verb Is Incorrect');
-        $this->assertEquals('/transactions/543', $this->getRequestPath(), 'The path is incorrect');
+        $this->assertEquals('/transactions/543', $transaction->path, 'The path is incorrect');
 
     }
 
@@ -69,11 +58,11 @@ class TransactionUnitTest extends PHPUnit_Framework_TestCase{
             'foo' => 'baz'
         );
 
-        $transaction = $this->client->disableSSL()->Update(654,$data);
+        $transaction = $this->client->transaction()->Update(654,$data);
 
         $this->assertEquals($data, get_object_vars($transaction->put),'Passed variables are not correct');
         $this->assertEquals('PUT', $transaction->request_method,'The PHP Verb Is Incorrect');
-        $this->assertEquals('/transactions/654', $this->getRequestPath(), 'The path is incorrect');
+        $this->assertEquals('/transactions/654', $transaction->path, 'The path is incorrect');
 
     }
 
@@ -86,10 +75,10 @@ class TransactionUnitTest extends PHPUnit_Framework_TestCase{
             'foo' => 'baa'
         );
 
-        $transaction = $this->client->disableSSL()->addSignature(655,$data);
+        $transaction = $this->client->transaction()->addSignature(655,$data);
         $this->assertEquals($data, get_object_vars($transaction->post),'Passed variables are not correct');
         $this->assertEquals('POST', $transaction->request_method,'The PHP Verb Is Incorrect');
-        $this->assertEquals('/transactions/655/signature/capture', $this->getRequestPath(), 'The path is incorrect');
+        $this->assertEquals('/transactions/655/signature/capture', $transaction->path, 'The path is incorrect');
 
     }
 

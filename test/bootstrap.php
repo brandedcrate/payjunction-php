@@ -1,6 +1,6 @@
 <?php
-require_once('lib/PayjunctionClient.php');
-require_once('lib/TransactionClient.php');
-require_once('lib/ReceiptClient.php');
-require_once('lib/CustomerClient.php');
 
+// require_once('lib/BrandedCrate/PayJunction/Client.php');
+// require_once('lib/BrandedCrate/PayJunction/TransactionClient.php');
+// require_once('lib/BrandedCrate/PayJunction/ReceiptClient.php');
+// require_once('lib/BrandedCrate/PayJunction/CustomerClient.php');

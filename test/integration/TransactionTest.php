@@ -1,6 +1,6 @@
 <?php
-require_once('test/bootstrap.php');
-use BrandedCrate\PayJunction\TransactionClient;
+
+use BrandedCrate\PayJunction;
 
 class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
 {
@@ -13,11 +13,12 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
         $options = array(
             'username' => 'pj-ql-01',
             'password' => 'pj-ql-01p',
-            'appkey' => '2489d40d-a74f-474f-9e8e-7b39507f3101'
+            'appkey'   => '2489d40d-a74f-474f-9e8e-7b39507f3101',
+            'endpoint' => 'test'
         );
 
         parent::setUp();
-        $this->client = new TransactionClient($options);
+        $this->client = (new PayJunction\Client($options))->transaction();
     }
 
     /**
@@ -109,7 +110,6 @@ class TransactionIntegrationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('VOID',$transaction->status,"Transaction was not voided");
         $this->assertObjectNotHasAttribute('errors',$transaction," Transaction has errors");
         $this->assertTrue($transaction->response->approved," Transaction did not maintain an approved status");
-
     }
 
 

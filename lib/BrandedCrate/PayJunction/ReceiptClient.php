@@ -1,13 +1,6 @@
 <?php namespace BrandedCrate\PayJunction;
-class ReceiptClient extends PayjunctionClient
+class ReceiptClient extends Client
 {
-    public function __construct($options)
-    {
-        parent::__construct();
-        $this->generateClient($options);
-
-    }
-
     /**
      * @description Gets the most recent receipt document URIs
      * @param $transactionId

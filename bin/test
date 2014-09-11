@@ -2,10 +2,10 @@
 
 set -e
 
-php -S localhost:8000 > /dev/null 2>&1 &
+php -S localhost:8000 -t test/echo > /dev/null 2>&1 &
 SERVER_PID=$!
 
-phpunit test/unit --debug --no-configuration --bootstrap test/bootstrap.php
-phpunit test/integration --debug --no-configuration --bootstrap test/bootstrap.php
+./vendor/bin/phpunit test/unit
+./vendor/bin/phpunit test/integration
 
 kill $SERVER_PID

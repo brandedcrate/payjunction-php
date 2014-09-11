@@ -1,13 +1,6 @@
 <?php namespace BrandedCrate\PayJunction;
-class TransactionClient extends PayjunctionClient
+class TransactionClient extends Client
 {
-    public function __construct($options)
-    {
-        parent::__construct();
-        $this->generateClient($options);
-
-    }
-
     /**
      * @description create a new transaction
      * @param $params
