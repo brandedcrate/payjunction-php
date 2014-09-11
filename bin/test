@@ -5,7 +5,7 @@ set -e
 php -S localhost:8000 -t test/echo > /dev/null 2>&1 &
 SERVER_PID=$!
 
-./vendor/bin/phpunit test/unit
-./vendor/bin/phpunit test/integration
 
+pwd
+./vendor/bin/phpcs /lib -n --standard=psr2 --report-file=/codesniffer_report.txt
 kill $SERVER_PID
