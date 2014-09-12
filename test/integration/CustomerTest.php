@@ -15,7 +15,7 @@ class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
         $options = array(
             'username' => 'pj-ql-01',
             'password' => 'pj-ql-01p',
-            'appkey'   => '2489d40d-a74f-474f-9e8e-7b39507f3101',
+            'appkey' => '2489d40d-a74f-474f-9e8e-7b39507f3101',
             'endpoint' => 'test'
         );
 
@@ -62,10 +62,9 @@ class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testUpdateCustomer()
     {
-        $response = $this->client->update($this->customer->customerId,$this->createData);
-        foreach($this->createData as $key => $value)
-        {
-            $this->assertEquals($value,$response->{$key},$key . " In response is equal to " . $response->{$key} . ". It should be equal to " . $this->createData[$key]);
+        $response = $this->client->update($this->customer->customerId, $this->createData);
+        foreach ($this->createData as $key => $value) {
+            $this->assertEquals($value, $response->{$key}, $key . " In response is equal to " . $response->{$key} . ". It should be equal to " . $this->createData[$key]);
         }
     }
 

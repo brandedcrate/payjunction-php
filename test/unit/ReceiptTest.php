@@ -2,8 +2,8 @@
 
 use BrandedCrate\PayJunction;
 
-class ReceiptUnitTest extends PHPUnit_Framework_TestCase{
-
+class ReceiptUnitTest extends PHPUnit_Framework_TestCase
+{
     public function setUp()
     {
         $options = array(
@@ -23,7 +23,7 @@ class ReceiptUnitTest extends PHPUnit_Framework_TestCase{
     public function testRead()
     {
         $transaction = $this->client->read(1234);
-        $this->assertEquals('GET', $transaction->request_method,'The HTTP Verb Is Incorrect');
+        $this->assertEquals('GET', $transaction->request_method, 'The HTTP Verb Is Incorrect');
         $this->assertEquals('/transactions/1234/receipts/latest', $transaction->path, 'The path is incorrect');
     }
 
@@ -34,7 +34,7 @@ class ReceiptUnitTest extends PHPUnit_Framework_TestCase{
     {
 
         $transaction = $this->client->readThermal(1234);
-        $this->assertEquals('GET', $transaction->request_method,'The HTTP Verb Is Incorrect');
+        $this->assertEquals('GET', $transaction->request_method, 'The HTTP Verb Is Incorrect');
         $this->assertEquals('/transactions/1234/receipts/latest/thermal', $transaction->path, 'The path is incorrect');
 
     }
@@ -43,9 +43,10 @@ class ReceiptUnitTest extends PHPUnit_Framework_TestCase{
     /**
      * Ensure that the correct verb and path are used for the readFullPage method
      */
-    public function testReadFullPage()    {
+    public function testReadFullPage()
+    {
         $transaction = $this->client->readFullPage(1234);
-        $this->assertEquals('GET', $transaction->request_method,'The HTTP Verb Is Incorrect');
+        $this->assertEquals('GET', $transaction->request_method, 'The HTTP Verb Is Incorrect');
         $this->assertEquals('/transactions/1234/receipts/latest/fullpage', $transaction->path, 'The path is incorrect');
     }
 
@@ -57,9 +58,9 @@ class ReceiptUnitTest extends PHPUnit_Framework_TestCase{
         $data = array(
             'hi' => 'hello'
         );
-        $transaction = $this->client->email(1234,$data);
-        $this->assertEquals('POST', $transaction->request_method,'The HTTP Verb Is Incorrect');
-        $this->assertEquals($data, get_object_vars($transaction->post),'Passed variables are not correct');
+        $transaction = $this->client->email(1234, $data);
+        $this->assertEquals('POST', $transaction->request_method, 'The HTTP Verb Is Incorrect');
+        $this->assertEquals($data, get_object_vars($transaction->post), 'Passed variables are not correct');
         $this->assertEquals('/transactions/1234/receipts/latest/email', $transaction->path, 'The path is incorrect');
     }
 }
