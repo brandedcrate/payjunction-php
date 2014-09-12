@@ -1,4 +1,5 @@
 <?php namespace BrandedCrate\PayJunction;
+
 class CustomerClient extends Client
 {
     /**
@@ -27,9 +28,9 @@ class CustomerClient extends Client
      * @param null $params
      * @return array|mixed
      */
-    public function update($id,$params = null)
+    public function update($id, $params = null)
     {
-        return $this->put('/customers/'.$id,$params);
+        return $this->put('/customers/'.$id, $params);
     }
 
 

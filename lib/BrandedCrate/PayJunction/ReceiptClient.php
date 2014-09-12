@@ -1,4 +1,5 @@
 <?php namespace BrandedCrate\PayJunction;
+
 class ReceiptClient extends Client
 {
     /**
@@ -9,7 +10,7 @@ class ReceiptClient extends Client
      */
     public function read($transactionId, $params = null)
     {
-        return $this->get('/transactions/'.$transactionId.'/receipts/latest',$params);
+        return $this->get('/transactions/'.$transactionId.'/receipts/latest', $params);
     }
 
     /**
@@ -20,7 +21,7 @@ class ReceiptClient extends Client
      */
     public function readThermal($transactionId, $params = null)
     {
-        return $this->get('/transactions/'.$transactionId.'/receipts/latest/thermal',$params);
+        return $this->get('/transactions/'.$transactionId.'/receipts/latest/thermal', $params);
     }
 
     /**
@@ -31,18 +32,18 @@ class ReceiptClient extends Client
      */
     public function readFullPage($transactionId, $params = null)
     {
-        return $this->get('/transactions/'.$transactionId.'/receipts/latest/fullpage',$params);
+        return $this->get('/transactions/'.$transactionId.'/receipts/latest/fullpage', $params);
     }
 
     /**
-     * @description Email a receipt. On success, returns HTTP Response “204 No Content” requires to and replyTo as parameters
+     * @description Email a receipt. On success, returns HTTP Response
+     * “204 No Content” requires to and replyTo as parameters
      * @param $transactionId
      * @param null $params
      * @return array|mixed
      */
-    public function email($transactionId,$params = null)
+    public function email($transactionId, $params = null)
     {
-        return $this->post('/transactions/'.$transactionId.'/receipts/latest/email',$params);
+        return $this->post('/transactions/'.$transactionId.'/receipts/latest/email', $params);
     }
-
 }
