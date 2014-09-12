@@ -8,11 +8,10 @@ A [PayJunction](https://www.payjunction.com/) API client for [php](http://http:/
 Installation
 ------------
 
-The module can be installed using Composer by adding the following lines to
-your composer.json file:
+The module can be installed using Composer:
 
 ```bash
-php composer.phar require vakata/jstree:*
+php composer.phar require brandedcrate/payjunction:*
 ```
 
 BrandedCrate\PayJunction fully supports PayJunction's REST API for
@@ -28,12 +27,13 @@ Instantiate an instance of \BrandedCrate\PayJunction\Client which provides
 access to all the available resources.
 
 ```php
-use BrandedCrate\PayJunction\PayJunctionClient;
+use BrandedCrate\PayJunction;
 
-$pj = new PayJunctionClient(array(
+$pj = new PayJunction\Client(array(
   'username' => 'YOUR-USERNAME',
   'password' => 'YOUR-PASSWORD',
-  'appkey' => 'YOUR-APP-KEY'
+  'appkey'   => 'YOUR-APP-KEY',
+  'endpoint' => 'test' // or 'live'
 ));
 ```
 
