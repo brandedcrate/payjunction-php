@@ -1,8 +1,10 @@
 <?php
 
+namespace BrandedCrate\PayJunction\Test\Unit;
+
 use BrandedCrate\PayJunction;
 
-class ReceiptUnitTest extends PHPUnit_Framework_TestCase
+class ReceiptUnitTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {

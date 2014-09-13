@@ -1,8 +1,10 @@
 <?php
 
+namespace BrandedCrate\PayJunction\Test\Integration;
+
 use BrandedCrate\PayJunction;
 
-class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
+class CustomerIntegrationTest extends \PHPUnit_Framework_TestCase
 {
 
     private $createData;
@@ -45,7 +47,11 @@ class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateCustomer()
     {
-        $this->assertTrue(is_integer($this->customer->customerId), "Got a " . gettype($this->customer->customerId) . " instead of an integer. A customer was not created");
+        $type = gettype($this->customer->customerId);
+        $this->assertTrue(
+            is_integer($this->customer->customerId),
+            "Got a $type instead of an integer. A customer was not created"
+        );
     }
 
     /**
@@ -53,8 +59,12 @@ class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
      */
     public function testReadCustomer()
     {
+        $type = gettype($this->customer->customerId);
         $customer = $this->client->read($this->customer->customerId);
-        $this->assertTrue(is_integer($customer->customerId), "Got a " . gettype($customer->customerId) . " instead of an integer. Customer was not read");
+        $this->assertTrue(
+            is_integer($customer->customerId),
+            "Got a $type instead of an integer. Customer was not read"
+        );
     }
 
     /**
@@ -64,7 +74,11 @@ class CustomerIntegrationTest extends PHPUnit_Framework_TestCase
     {
         $response = $this->client->update($this->customer->customerId, $this->createData);
         foreach ($this->createData as $key => $value) {
-            $this->assertEquals($value, $response->{$key}, $key . " In response is equal to " . $response->{$key} . ". It should be equal to " . $this->createData[$key]);
+            $message = "$key In response is equal to " .
+                $response->{$key} . ". It should be equal to " .
+                $this->createData[$key];
+
+            $this->assertEquals($value, $response->{$key}, $message);
         }
     }
 

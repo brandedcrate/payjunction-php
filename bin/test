@@ -2,7 +2,7 @@
 
 set -e
 
-./vendor/bin/phpcs lib test --standard=psr2
+./vendor/bin/phpcs -v --standard=psr2 lib test
 
 php -S localhost:8000 -t test/echo > /dev/null 2>&1 &
 SERVER_PID=$!
