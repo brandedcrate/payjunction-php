@@ -1,5 +1,5 @@
 {
-    "name": "brandedcrate/payjunction-php",
+    "name": "brandedcrate/payjunction",
     "description": "PayJunction API client for PHP",
     "version": "0.1.0",
     "type": "library",
