@@ -9,7 +9,7 @@ class Client
 
     public $liveEndpoint = 'https://api.payjunction.com';
     public $testEndpoint = 'https://api.payjunctionlabs.com';
-    public $packageVersion = '0.0.1';
+    public $packageVersion;
     public $userAgent;
     public $endpoint;
     public $curl;
@@ -17,14 +17,29 @@ class Client
     public function __construct($options)
     {
         $this->options = $options;
+        $this->packageVersion = $this->readPackageVersion();
 
         $this->userAgent = 'PayJunctionPHPClient/' .
-            $this->packageVersion .
-            '(BrandedCrate; ' .
+            "$this->packageVersion " .
+            '(BrandedCrate; PHP v' .
             phpversion() .
             ')';
 
         $this->setEndpoint($options['endpoint']);
+    }
+
+    public function readPackageVersion()
+    {
+        $composerJsonPath = dirname(__FILE__) . DIRECTORY_SEPARATOR .
+            '..' . DIRECTORY_SEPARATOR .
+            '..' . DIRECTORY_SEPARATOR .
+            '..' . DIRECTORY_SEPARATOR .
+            'composer.json';
+
+        $composerJson = file_get_contents($composerJsonPath);
+        $composer = json_decode($composerJson);
+
+        return $composer->version;
     }
 
     public function setEndpoint($endpoint)
