@@ -1,13 +1,13 @@
 {
     "name": "brandedcrate/payjunction",
     "description": "PayJunction API client for PHP",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "type": "library",
     "keywords": ["api", "client", "payjunction", "gateway" , "payments"],
     "homepage": "https://github.com/brandedcrate/payjunction-php",
-    "time": "2014-09-08",
+    "time": "2014-09-12",
     "minimum-stability": "stable",
-    "license": "proprietary",
+    "license": "MIT",
     "authors": [
         {
             "name": "Andrew Wolf",
