@@ -1,18 +1,15 @@
 <?php
 
-if (!function_exists('getallheaders'))
-{
+if (!function_exists('getallheaders')) {
     function getallheaders()
     {
-           $headers = '';
-       foreach ($_SERVER as $name => $value)
-       {
-           if (substr($name, 0, 5) == 'HTTP_')
-           {
-               $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
-           }
-       }
-       return $headers;
+        $headers = '';
+        foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) == 'HTTP_') {
+                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+            }
+        }
+        return $headers;
     }
 }
 
@@ -28,10 +25,8 @@ $data = array(
 );
 
 //If the request is a put then get the file contents and try to parse the string into an array
-if($data['request_method'] == 'PUT')
-{
+if ($data['request_method'] == 'PUT') {
     parse_str(file_get_contents("php://input"), $put_data);
     $data['put'] = $put_data;
 }
 echo json_encode($data);
-

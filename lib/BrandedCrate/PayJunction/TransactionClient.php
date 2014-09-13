@@ -1,4 +1,5 @@
 <?php namespace BrandedCrate\PayJunction;
+
 class TransactionClient extends Client
 {
     /**
@@ -8,7 +9,7 @@ class TransactionClient extends Client
      */
     public function create($params)
     {
-        return $this->post('/transactions',$params);
+        return $this->post('/transactions', $params);
     }
 
     /**
@@ -42,8 +43,7 @@ class TransactionClient extends Client
      */
     public function addSignature($id, $params)
     {
-        return $this->post('/transactions/'.$id.'/signature/capture',$params);
+        return $this->post('/transactions/'.$id.'/signature/capture', $params);
 
     }
-
 }
