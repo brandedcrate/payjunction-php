@@ -3,6 +3,7 @@
 use BrandedCrate\PayJunction\TransactionClient;
 use BrandedCrate\PayJunction\CustomerClient;
 use BrandedCrate\PayJunction\ReceiptClient;
+use BrandedCrate\PayJunction\Exception;
 
 class Client
 {
@@ -87,14 +88,17 @@ class Client
         $responseCode = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
         $contentLength = curl_getinfo($this->curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
 
+        // the content is json, so parse it
         if ($contentType == 'application/json') {
             $response = json_decode($response);
         }
 
-        if ($responseCode < 200 && $responseCode >= 300) {
+        // error, throw an exception
+        if ($responseCode < 200 || $responseCode >= 300) {
             throw new Exception($response, $responseCode);
         }
 
+        // successful, but no content. return true
         if ($contentLength == 0) {
             return true;
         }

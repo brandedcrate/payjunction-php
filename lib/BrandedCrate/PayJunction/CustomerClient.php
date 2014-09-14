@@ -19,7 +19,7 @@ class CustomerClient extends Client
      */
     public function read($id)
     {
-        return $this->get('/customers/'.$id);
+        return $this->get("/customers/$id");
     }
 
     /**
@@ -30,7 +30,7 @@ class CustomerClient extends Client
      */
     public function update($id, $params = null)
     {
-        return $this->put('/customers/'.$id, $params);
+        return $this->put("/customers/$id", $params);
     }
 
 

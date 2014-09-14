@@ -21,10 +21,13 @@ class CustomerIntegrationTest extends \PHPUnit_Framework_TestCase
             'endpoint' => 'test'
         );
 
-        parent::setUp();
-
         $this->client = (new PayJunction\Client($options))->customer();
 
+        parent::setUp();
+    }
+
+    public function createCustomer()
+    {
         $this->createData = array(
             'companyName' => 'ACME, inc.',
             'email' => 'customer@acme.com',
@@ -41,12 +44,26 @@ class CustomerIntegrationTest extends \PHPUnit_Framework_TestCase
         $this->customer = $this->client->create($this->createData);
     }
 
+    public function testBadCreateCustomer()
+    {
+        $errors = array();
+
+        try {
+            $this->customer = $this->client->create(array());
+        } catch (PayJunction\Exception $e) {
+            $errors = $e->getResponse()->errors;
+        }
+
+        $this->assertEquals(count($errors), 1, 'No errors');
+    }
 
     /**
      * @description create a new customer
      */
     public function testCreateCustomer()
     {
+        $this->createCustomer();
+
         $type = gettype($this->customer->customerId);
         $this->assertTrue(
             is_integer($this->customer->customerId),
@@ -59,6 +76,8 @@ class CustomerIntegrationTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadCustomer()
     {
+        $this->createCustomer();
+
         $type = gettype($this->customer->customerId);
         $customer = $this->client->read($this->customer->customerId);
         $this->assertTrue(
@@ -67,11 +86,29 @@ class CustomerIntegrationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testBadReadCustomer()
+    {
+        $responseCode;
+        $errors;
+
+        try {
+            $customer = $this->client->read('98adsf98ndsf98basdfb7sad987');
+        } catch (PayJunction\Exception $e) {
+            $responseCode = $e->getCode();
+            $errors = $e->getResponse()->errors;
+        }
+
+        $this->assertEquals($responseCode, 404, 'Response code is not 404');
+        $this->assertEquals(count($errors), 1, 'Error count incorrect');
+    }
+
     /**
      * @description update a customer
      */
     public function testUpdateCustomer()
     {
+        $this->createCustomer();
+
         $response = $this->client->update($this->customer->customerId, $this->createData);
         foreach ($this->createData as $key => $value) {
             $message = "$key In response is equal to " .
@@ -87,14 +124,22 @@ class CustomerIntegrationTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeleteCustomer()
     {
+        $this->createCustomer();
+
         $response = $this->client->delete($this->customer->customerId);
         $this->assertTrue($response, "Unable to delete customer");
 
-        $response = $this->client->read($this->customer->customerId);
-        $this->assertEquals(
-            $response->errors[0]->message,
-            '404 Not Found',
-            'The customer was able to be read, It was not deleted'
-        );
+        $errors;
+        $status;
+
+        try {
+            $response = $this->client->read($this->customer->customerId);
+        } catch (PayJunction\Exception $e) {
+            $status = $e->getCode();
+            $errors = $e->getResponse()->errors;
+        }
+
+        $this->assertGreaterThan(0, count($errors), 'No errors');
+        $this->assertEquals(404, $status, 'Wrong status code');
     }
 }

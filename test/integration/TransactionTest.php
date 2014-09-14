@@ -48,12 +48,29 @@ class TransactionIntegrationTest extends \PHPUnit_Framework_TestCase
         return number_format(rand(1, 100), 2, '.', '');
     }
 
+    public function testBadTransaction()
+    {
+        $errors;
+        $status;
+
+        try {
+            $transaction = $this->client->create(array());
+        } catch (PayJunction\Exception $e) {
+            $status = $e->getCode();
+            $errors = $e->getResponse()->errors;
+        }
+
+        $this->assertGreaterThan(0, count($errors), 'Not enough errors');
+        $this->assertEquals(400, $status, 'Wrong status code');
+    }
+
     /**
      * @description create an ach transaction
      */
     public function testACHTransaction()
     {
-        $data = array('achRoutingNumber' => '104000016',
+        $data = array(
+            'achRoutingNumber' => '104000016',
             'achAccountNumber' => '123456789',
             'achAccountType' => 'CHECKING',
             'achType' => 'PPD',
@@ -63,9 +80,7 @@ class TransactionIntegrationTest extends \PHPUnit_Framework_TestCase
         $transaction = $this->client->create($data);
 
         $this->isSuccessfulTransaction($transaction, 'ACH');
-
     }
-
 
     /**
      * @description create a credit card transaction
@@ -119,7 +134,6 @@ class TransactionIntegrationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($transaction->response->approved, " Transaction did not maintain an approved status");
     }
 
-
     /**
      * @description create a transaction and add a signature to it
      */
@@ -139,7 +153,6 @@ class TransactionIntegrationTest extends \PHPUnit_Framework_TestCase
         $transaction = $this->client->addSignature($transaction->transactionId, $signature_data);
 
         $this->assertEquals('SIGNED', $transaction->signatureStatus, 'The transaction does not have a signed status');
-
     }
 
     /**
@@ -161,6 +174,5 @@ class TransactionIntegrationTest extends \PHPUnit_Framework_TestCase
             $read_transaction->transactionId,
             'The created transaction Id is not the same as the read transaction Id'
         );
-
     }
 }
