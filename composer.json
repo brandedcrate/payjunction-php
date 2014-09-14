@@ -1,7 +1,7 @@
 {
     "name": "brandedcrate/payjunction",
     "description": "PayJunction API client for PHP",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "type": "library",
     "keywords": ["api", "client", "payjunction", "gateway" , "payments"],
     "homepage": "https://github.com/brandedcrate/payjunction-php",

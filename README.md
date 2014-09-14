@@ -30,10 +30,10 @@ access to all the available resources.
 use BrandedCrate\PayJunction;
 
 $pj = new PayJunction\Client(array(
-  'username' => 'YOUR-USERNAME',
-  'password' => 'YOUR-PASSWORD',
-  'appkey'   => 'YOUR-APP-KEY',
-  'endpoint' => 'test' // or 'live'
+    'username' => 'YOUR-USERNAME',
+    'password' => 'YOUR-PASSWORD',
+    'appkey'   => 'YOUR-APP-KEY',
+    'endpoint' => 'test' // or 'live'
 ));
 ```
 
