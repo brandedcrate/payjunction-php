@@ -66,7 +66,7 @@ class Client
         curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_FORBID_REUSE, true);
-        curl_setopt($this->curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($this->curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($this->curl, CURLOPT_USERPWD, $this->options['username'] . ":" . $this->options['password']);
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, array(
             "X-PJ-Application-Key: {$this->options['appkey']}",
