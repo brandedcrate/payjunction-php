@@ -177,6 +177,44 @@ $customer->customerId; // int(7902)
 $customer->uri;        // "https://api.payjunctionlabs.com/customers/7902"
 ```
 
+### vaults
+
+Create a customer vault
+
+```php
+$vault = $pj->customerVault()->create('345678', array(
+    'cardNumber' => '4242424242424242',
+    'cardExpMonth' => '2',
+    'cardExpYear' => '25'
+));
+$vault->vaultId; // int(44)
+```
+
+Read a vault
+```php
+$vault = $pj->customerVault()->read('345678', '44');
+```
+
+Index all vaults for a customer
+```php
+$vaults = $pj->customerVault()->index('345678');
+```
+
+Update a vault
+```php
+$updatedVault = $pj->customerVault()->update('345678', '44', array(
+    'address' => '1600 Pennsylvania Ave NW',
+    'city' => 'Washington',
+    'state' => 'DC',
+    'zip' => 20500
+));
+```
+
+Delete a vault
+```php
+$result = $pj->customerVault()->delete('345678', '44'); // true
+```
+
 ## Running Tests
 
 This package includes standalone unit tests and integration tests. Run them
