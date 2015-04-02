@@ -10,7 +10,7 @@ class CustomerIntegrationTest extends \PHPUnit_Framework_TestCase
     private $createData;
 
     /**
-     * Runs once before all tests are starte d     *
+     * Runs once before all tests are started
      */
     public function setUp()
     {

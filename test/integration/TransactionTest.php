@@ -8,7 +8,7 @@ class TransactionIntegrationTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * Runs once before all tests are started     *
+     * Runs once before all tests are started
      */
     public function setUp()
     {

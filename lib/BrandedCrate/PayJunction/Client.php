@@ -2,6 +2,7 @@
 
 use BrandedCrate\PayJunction\TransactionClient;
 use BrandedCrate\PayJunction\CustomerClient;
+use BrandedCrate\PayJunction\CustomerVaultClient;
 use BrandedCrate\PayJunction\ReceiptClient;
 use BrandedCrate\PayJunction\Exception;
 
@@ -235,5 +236,17 @@ class Client
             $this->customerClient = new CustomerClient($this->options);
         }
         return $this->customerClient;
+    }
+
+    /**
+     * @description returns an instance of the customerVault client
+     * @return CustomerVaultClient
+     */
+    public function customerVault()
+    {
+        if (!isset($this->customerVaultClient) && isset($this->options)) {
+            $this->customerVaultClient = new CustomerVaultClient($this->options);
+        }
+        return $this->customerVaultClient;
     }
 }
