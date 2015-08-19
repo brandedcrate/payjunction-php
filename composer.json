@@ -28,7 +28,7 @@
     },
     "autoload": {
         "psr-0": {
-            "": "lib"
+            "BrandedCrate\\PayJunction": "lib"
         }
     }
 }
