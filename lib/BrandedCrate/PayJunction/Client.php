@@ -1,4 +1,5 @@
-<?php namespace BrandedCrate\PayJunction;
+<?php
+namespace BrandedCrate\PayJunction;
 
 use BrandedCrate\PayJunction\TransactionClient;
 use BrandedCrate\PayJunction\CustomerClient;
