@@ -1,4 +1,5 @@
-<?php namespace BrandedCrate\PayJunction;
+<?php
+namespace BrandedCrate\PayJunction;
 
 class TransactionClient extends Client
 {

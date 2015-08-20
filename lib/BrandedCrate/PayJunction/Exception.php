@@ -1,5 +1,4 @@
 <?php
-
 namespace BrandedCrate\PayJunction;
 
 use RuntimeException;
